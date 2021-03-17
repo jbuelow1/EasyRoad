@@ -1,0 +1,28 @@
+name: EasyRoad
+version: ${project.version}
+main: com.jbuelow.mc.easyroad.EasyRoad
+depend: [dynmap]
+api-version: 1.16
+prefix: EasyRoad
+authors: [ YammyShep ]
+description: Create dynmap road markers using a wand!
+
+commands:
+  easyroad:
+    description: Use EasyRoad
+    aliases: [ easyroad ]
+    permission: easyroad.easyroad
+    usage: "Usage: /easyroad <help|session>"
+
+permissions:
+  easyroad.*:
+    description: gives full access
+    children:
+      easyroad.start: true
+      easyroad.stop: true
+  easyroad.start:
+    description: allows start subcommand
+    default: false
+  easyroad.stop:
+    description: allows stop subcommand
+    default: false
