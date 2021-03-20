@@ -39,7 +39,7 @@ public class HandleCommandName implements SubCommand {
             roadName += " " + args[i];
         }
 
-        easyRoad.getActiveSessions().get(p).setSet(roadName);
+        easyRoad.getActiveSessions().get(p).setRoadName(roadName);
 
         p.sendMessage("New roads in this session will be named \"" + roadName + "\".");
         return true;
@@ -47,6 +47,6 @@ public class HandleCommandName implements SubCommand {
 
     @Override
     public String[] getCallables() {
-        return new String[] {"set"};
+        return new String[] {"name"};
     }
 }
