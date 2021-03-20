@@ -29,6 +29,10 @@ public class Session {
     private String set = "EasyRoad";
     private String roadName = "Unnamed Road";
 
+    private int weight = 3;
+    private double opacity = 0.8;
+    private int color = 0xFF0000;
+
     public Session(EasyRoad easyRoad, Player player) {
         this.easyRoad = easyRoad;
         this.player = player;
@@ -56,10 +60,12 @@ public class Session {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (p2a == null) {
                 p2a = event.getClickedBlock().getLocation();
+                p2a.add(0.5, 1, 0.5);
                 event.getPlayer().sendMessage("Set subpoint to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
                 return;
             } else {
                 Location b = event.getClickedBlock().getLocation();
+                b.add(0.5, 1, 0.5);
                 p2 = new Location(p2a.getWorld(), (p2a.getX() + b.getX())/2, (p2a.getY() + b.getY())/2, (p2a.getZ() + b.getZ())/2);
                 event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
             }
@@ -68,6 +74,7 @@ public class Session {
         if (p1 == null) {
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 p1 = event.getClickedBlock().getLocation();
+                p1.add(0.5, 1, 0.5);
             } else {
                 p1 = p2;
             }
@@ -75,6 +82,7 @@ public class Session {
         } else {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                 p2 = event.getClickedBlock().getLocation();
+                p2.add(0.5, 1, 0.5);
             }
             event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
             makeLine();
@@ -93,6 +101,8 @@ public class Session {
 
         PolyLineMarker marker = markerset.createPolyLineMarker("road" + id++, roadName, false, p1.getWorld().getName(),
                 new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
+
+        marker.setLineStyle(weight, opacity, color);
 
         lineHistory.add(marker);
     }
@@ -117,5 +127,17 @@ public class Session {
 
     public void setRoadName(String roadName) {
         this.roadName = roadName;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }
