@@ -23,7 +23,8 @@ public class HandleCommandRoot implements CommandExecutor {
                 new HandleCommandStop(easyRoad),
                 new HandleCommandUndo(easyRoad),
                 new HandleCommandName(easyRoad),
-                new HandleCommandSet(easyRoad)};
+                new HandleCommandSet(easyRoad),
+                new HandleCommandStyle(easyRoad)};
 
         for (SubCommand sc : subCommandHandlers) {
             for (String callable : sc.getCallables()) {
