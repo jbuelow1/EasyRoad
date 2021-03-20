@@ -29,6 +29,10 @@ public class Session {
     private String set = "EasyRoad";
     private String roadName = "Unnamed Road";
 
+    private int weight = 3;
+    private double opacity = 0.8;
+    private int color = 0xFF0000;
+
     public Session(EasyRoad easyRoad, Player player) {
         this.easyRoad = easyRoad;
         this.player = player;
@@ -98,6 +102,8 @@ public class Session {
         PolyLineMarker marker = markerset.createPolyLineMarker("road" + id++, roadName, false, p1.getWorld().getName(),
                 new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
 
+        marker.setLineStyle(weight, opacity, color);
+
         lineHistory.add(marker);
     }
 
@@ -121,5 +127,17 @@ public class Session {
 
     public void setRoadName(String roadName) {
         this.roadName = roadName;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

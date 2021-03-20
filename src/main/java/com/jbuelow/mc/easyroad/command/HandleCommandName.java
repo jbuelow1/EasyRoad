@@ -47,6 +47,6 @@ public class HandleCommandName implements SubCommand {
 
     @Override
     public String[] getCallables() {
-        return new String[] {"name"};
+        return new String[] {"name", "n"};
     }
 }
