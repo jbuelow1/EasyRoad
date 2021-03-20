@@ -60,10 +60,12 @@ public class Session {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (p2a == null) {
                 p2a = event.getClickedBlock().getLocation();
+                p2a.add(0.5, 1, 0.5);
                 event.getPlayer().sendMessage("Set subpoint to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
                 return;
             } else {
                 Location b = event.getClickedBlock().getLocation();
+                b.add(0.5, 1, 0.5);
                 p2 = new Location(p2a.getWorld(), (p2a.getX() + b.getX())/2, (p2a.getY() + b.getY())/2, (p2a.getZ() + b.getZ())/2);
                 event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
             }
@@ -72,6 +74,7 @@ public class Session {
         if (p1 == null) {
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 p1 = event.getClickedBlock().getLocation();
+                p1.add(0.5, 1, 0.5);
             } else {
                 p1 = p2;
             }
@@ -79,6 +82,7 @@ public class Session {
         } else {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                 p2 = event.getClickedBlock().getLocation();
+                p2.add(0.5, 1, 0.5);
             }
             event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
             makeLine();
