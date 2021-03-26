@@ -67,6 +67,7 @@ public class Session {
                 Location b = event.getClickedBlock().getLocation();
                 b.add(0.5, 1, 0.5);
                 p2 = new Location(p2a.getWorld(), (p2a.getX() + b.getX())/2, (p2a.getY() + b.getY())/2, (p2a.getZ() + b.getZ())/2);
+                p2a = null;
                 event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
             }
         }
