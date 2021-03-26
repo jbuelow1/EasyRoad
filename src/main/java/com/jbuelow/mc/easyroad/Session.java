@@ -57,6 +57,8 @@ public class Session {
             return;
         }
 
+        event.setCancelled(true);
+
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (p2a == null) {
                 p2a = event.getClickedBlock().getLocation();
