@@ -2,6 +2,7 @@ package com.jbuelow.mc.easyroad;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -66,6 +67,8 @@ public class Session {
                 p2a = event.getClickedBlock().getLocation();
                 p2a.add(0.5, 1, 0.5);
                 event.getPlayer().sendMessage("Set subpoint to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+              
+                player.playSound(p2a, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 player.spawnParticle(Particle.REDSTONE, p2a, 10, 0.0125, 0.00125, 0.0125, new Particle.DustOptions(Color.YELLOW, 3));
                 return;
             } else {
@@ -84,6 +87,8 @@ public class Session {
                 p1 = p2;
             }
             event.getPlayer().sendMessage("Set first point to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+          
+            player.playSound(p1, Sound.BLOCK_ANVIL_PLACE, 1, 1);
             player.spawnParticle(Particle.COMPOSTER, p1, 25, 0.125, 0.0125, 0.125);
         } else {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
@@ -117,6 +122,8 @@ public class Session {
 
         lineHistory.add(marker);
 
+        player.playSound(p2, Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 1);
+      
         //Show dust particles along line
         double distX = p2.getX() - p1.getX();
         double distY = p2.getY() - p1.getY();
