@@ -119,6 +119,9 @@ public class Session {
             p1 = pointHistory.get(pointHistory.size() - 1);
             pointHistory.remove(pointHistory.size() - 1);
             return true;
+        } else if (p1 != null) {
+            p1 = null;
+            return true;
         }
         return false;
     }
