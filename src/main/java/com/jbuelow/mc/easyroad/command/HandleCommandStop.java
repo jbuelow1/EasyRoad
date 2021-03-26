@@ -39,7 +39,7 @@ public class HandleCommandStop implements SubCommand {
 
     @Override
     public String[] getCallables() {
-        return new String[] {"Stop"};
+        return new String[] {"stop"};
     }
 
 }

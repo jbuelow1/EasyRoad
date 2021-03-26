@@ -28,7 +28,7 @@ public class HandleCommandRoot implements CommandExecutor {
 
         for (SubCommand sc : subCommandHandlers) {
             for (String callable : sc.getCallables()) {
-                subcommands.put(callable, sc);
+                subcommands.put(callable.toLowerCase(), sc);
             }
         }
 
@@ -41,7 +41,7 @@ public class HandleCommandRoot implements CommandExecutor {
             return false;
         }
 
-        if (subcommands.containsKey(args[0])) {
+        if (subcommands.containsKey(args[0].toLowerCase())) {
 
             String[] subargs = new String[args.length - 1];
             for (int i = 1; i < args.length; i++) {
