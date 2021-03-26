@@ -1,6 +1,8 @@
 package com.jbuelow.mc.easyroad;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -64,6 +66,7 @@ public class Session {
                 p2a = event.getClickedBlock().getLocation();
                 p2a.add(0.5, 1, 0.5);
                 event.getPlayer().sendMessage("Set subpoint to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+                player.spawnParticle(Particle.REDSTONE, p2a, 10, 0.0125, 0.00125, 0.0125, new Particle.DustOptions(Color.YELLOW, 3));
                 return;
             } else {
                 Location b = event.getClickedBlock().getLocation();
@@ -81,12 +84,18 @@ public class Session {
                 p1 = p2;
             }
             event.getPlayer().sendMessage("Set first point to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+            player.spawnParticle(Particle.COMPOSTER, p1, 25, 0.125, 0.0125, 0.125);
         } else {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                 p2 = event.getClickedBlock().getLocation();
                 p2.add(0.5, 1, 0.5);
             }
             event.getPlayer().sendMessage("Set next point to " + p2.getX() + " " + p2.getY() + " " + p2.getZ());
+
+            //Show green diamond particle on either end of the line
+            player.spawnParticle(Particle.COMPOSTER, p1, 25, 0.125, 0.0125, 0.125);
+            player.spawnParticle(Particle.COMPOSTER, p2, 25, 0.125, 0.0125, 0.125);
+
             makeLine();
             event.getPlayer().sendMessage("Line created!");
             pointHistory.add(p1);
@@ -107,6 +116,19 @@ public class Session {
         marker.setLineStyle(weight, opacity, color);
 
         lineHistory.add(marker);
+
+        //Show dust particles along line
+        double distX = p2.getX() - p1.getX();
+        double distY = p2.getY() - p1.getY();
+        double distZ = p2.getZ() - p1.getZ();
+        double dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2) + Math.pow(distZ, 2));
+
+        for (int i = 1; i < (int) dist; i++) {
+            double p = i * (dist / (int) dist);
+            Location part = new Location(p1.getWorld(), p1.getX(), p1.getY(), p1.getZ());
+            part.add((distX / dist) * p, (distY / dist) * p, (distZ / dist) * p);
+            player.spawnParticle(Particle.REDSTONE, part, 10, 0.25, 0.125, 0.25, new Particle.DustOptions(Color.fromRGB(color), 2));
+        }
     }
 
     public boolean undo() {
