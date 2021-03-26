@@ -1,6 +1,7 @@
 package com.jbuelow.mc.easyroad;
 
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -62,6 +63,7 @@ public class Session {
                 p2a = event.getClickedBlock().getLocation();
                 p2a.add(0.5, 1, 0.5);
                 event.getPlayer().sendMessage("Set subpoint to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+                player.playSound(p2a, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 return;
             } else {
                 Location b = event.getClickedBlock().getLocation();
@@ -79,6 +81,7 @@ public class Session {
                 p1 = p2;
             }
             event.getPlayer().sendMessage("Set first point to " + p1.getX() + " " + p1.getY() + " " + p1.getZ());
+            player.playSound(p1, Sound.BLOCK_ANVIL_PLACE, 1, 1);
         } else {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                 p2 = event.getClickedBlock().getLocation();
@@ -105,6 +108,8 @@ public class Session {
         marker.setLineStyle(weight, opacity, color);
 
         lineHistory.add(marker);
+
+        player.playSound(p2, Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 1);
     }
 
     public boolean undo() {
