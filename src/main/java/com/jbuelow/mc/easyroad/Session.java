@@ -10,7 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
-import java.util.ArrayList;
+import java.math.BigInteger;
+import java.util.*;
 
 public class Session {
 
@@ -27,7 +28,7 @@ public class Session {
     ArrayList<PolyLineMarker> lineHistory = new ArrayList<>();
     ArrayList<Location> pointHistory = new ArrayList<>();
 
-    private int id = 0;
+    private final Random r = new Random();
 
     private String set = "EasyRoad";
     private String roadName = "Unnamed Road";
@@ -116,7 +117,10 @@ public class Session {
             markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), false);
         }
 
-        PolyLineMarker marker = markerset.createPolyLineMarker("road" + id++, roadName, false, p1.getWorld().getName(),
+        UUID uid = UUID.randomUUID();
+        String id = uid.toString();
+
+        PolyLineMarker marker = markerset.createPolyLineMarker("eroad_" + id, roadName, false, p1.getWorld().getName(),
                 new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
 
         marker.setLineStyle(weight, opacity, color);
