@@ -114,7 +114,7 @@ public class Session {
         MarkerSet markerset = easyRoad.getDapi().getMarkerAPI().getMarkerSet(set);
 
         if (markerset == null) {
-            markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), true);
+            markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), false);
         }
 
         UUID uid = UUID.randomUUID();
