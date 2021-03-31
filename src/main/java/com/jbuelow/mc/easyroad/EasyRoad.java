@@ -48,6 +48,9 @@ public final class EasyRoad extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        getLogger().log(Level.INFO, "Saving road database...");
+        storageController.save();
+        getLogger().log(Level.INFO, "Done!");
     }
 
     public HashMap<Player, Session> getActiveSessions() {
