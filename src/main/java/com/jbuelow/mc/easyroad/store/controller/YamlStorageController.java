@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -31,18 +32,27 @@ public class YamlStorageController implements StorageController {
     @Override
     public void load() {
         roadconfigs = new HashMap<>();
+
+        if (!easyRoad.getDataFolder().exists()) easyRoad.getDataFolder().mkdir();
+        if (!new File(easyRoad.getDataFolder(), "roads").exists()) new File(easyRoad.getDataFolder(), "roads").mkdir();
+
         for (File f : new File(easyRoad.getDataFolder(), "roads").listFiles()) {
             YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
             UUID uuid = UUID.fromString(conf.getString("uuid"));
             roadconfigs.put(uuid, conf);
         }
+
         easyRoad.getLogger().log(Level.INFO, "Loaded " + roadconfigs.size() + " roads from yaml datastores.");
     }
 
     @Override
-    public void save() throws IOException {
+    public void save() {
         for (Map.Entry<UUID, YamlConfiguration> e : roadconfigs.entrySet()) {
-            e.getValue().save(new File(easyRoad.getDataFolder(), "roads/" + e.getKey().toString() + ".yml"));
+            try {
+                e.getValue().save(new File(easyRoad.getDataFolder(), "roads/" + e.getKey().toString() + ".yml"));
+            } catch (IOException ioException) {
+                easyRoad.getLogger().log(Level.WARNING, "Failed to save file for road with UUID: " + e.getKey().toString(), ioException);
+            }
         }
     }
 

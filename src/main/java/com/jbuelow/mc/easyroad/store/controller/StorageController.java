@@ -13,7 +13,7 @@ public interface StorageController {
     boolean isInitialized();
     void init();
     void load();
-    void save() throws IOException;
+    void save();
     Road getRoadByUUID(UUID uuid) throws NoSuchElementException;
     ArrayList<Road> getRoadList();
     HashMap<UUID, Road> getRoadMap();
