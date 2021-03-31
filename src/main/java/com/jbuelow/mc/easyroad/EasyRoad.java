@@ -2,6 +2,8 @@ package com.jbuelow.mc.easyroad;
 
 import com.jbuelow.mc.easyroad.command.HandleCommandRoot;
 import com.jbuelow.mc.easyroad.event.EventPlayerInteractListener;
+import com.jbuelow.mc.easyroad.render.DynmapRenderer;
+import com.jbuelow.mc.easyroad.render.Renderer;
 import com.jbuelow.mc.easyroad.store.controller.StorageController;
 import com.jbuelow.mc.easyroad.store.controller.YamlStorageController;
 import org.bukkit.Bukkit;
@@ -16,7 +18,8 @@ public final class EasyRoad extends JavaPlugin {
 
     private DynmapAPI dapi = null;
     private HashMap<Player, Session> activeSessions;
-    private StorageController storageController;
+    public StorageController storageController;
+    public Renderer renderer = new DynmapRenderer(this);
 
     public EasyRoad() {
         this.activeSessions = new HashMap<>();
@@ -41,6 +44,9 @@ public final class EasyRoad extends JavaPlugin {
 
         storageController = new YamlStorageController(this);
         storageController.load();
+
+        renderer.applyRoadList(storageController.getRoadList());
+        renderer.rerenderAll();
 
         getLogger().log(Level.INFO, "Started EasyRoad");
     }

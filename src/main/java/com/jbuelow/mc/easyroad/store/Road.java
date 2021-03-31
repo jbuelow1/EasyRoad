@@ -2,11 +2,9 @@ package com.jbuelow.mc.easyroad.store;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Road {
 
@@ -18,22 +16,29 @@ public class Road {
 
     private Road(UUID uuid) {
         this.uuid = uuid;
+        segments = new ArrayList<>();
+        name = "Unnamed Road";
     }
 
     public Road() {
-        uuid = UUID.randomUUID();
+        this(UUID.randomUUID());
     }
 
     public Configuration saveToConfig(Configuration conf) {
         conf.set("uuid", uuid.toString());
         conf.set("name", name);
 
-        conf.createSection("segments");
+        ArrayList<HashMap<String, Object>> segconf = new ArrayList<>();
 
         for (RoadSegment rs : segments) {
-            conf.set("segments." + rs.getSegId() + ".a", rs.getPoint1());
-            conf.set("segments." + rs.getSegId() + ".b", rs.getPoint2());
+            HashMap<String, Object> segmap = new HashMap<>();
+            segmap.put("uuid", rs.getSegId());
+            segmap.put("p1", rs.getPoint1());
+            segmap.put("p2", rs.getPoint2());
+            segconf.add(segmap);
         }
+
+        conf.set("segments", segconf);
 
         return conf;
     }
@@ -42,11 +47,11 @@ public class Road {
         Road r = new Road(UUID.fromString(conf.get("uuid").toString()));
         r.name = conf.get("name").toString();
 
-        for (Object segkey: conf.getList("segments")) {
-            String s = (String) segkey;
+        for (Object segconf: conf.getList("segments")) {
+            String s = (String) ((HashMap<String, ?>) segconf).get("uuid");
 
-            Location p1 = conf.getLocation("segments." + s + ".a");
-            Location p2 = conf.getLocation("segments." + s + ".b");
+            Location p1 = (Location) ((HashMap<String, ?>) segconf).get("p1");
+            Location p2 = (Location) ((HashMap<String, ?>) segconf).get("p2");
 
             RoadSegment seg = new RoadSegment() {
                 @Override
