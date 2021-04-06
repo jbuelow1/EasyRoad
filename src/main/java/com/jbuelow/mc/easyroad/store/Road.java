@@ -9,10 +9,10 @@ import java.util.*;
 public class Road {
 
     private final UUID uuid;
+    private String name;
+    private RoadStyle style;
 
     private ArrayList<RoadSegment> segments;
-
-    private String name;
 
     private Road(UUID uuid) {
         this.uuid = uuid;
@@ -94,5 +94,13 @@ public class Road {
 
     public ArrayList<RoadSegment> getSegments() {
         return segments;
+    }
+
+    public RoadStyle getStyle() {
+        return style;
+    }
+
+    public void setStyle(RoadStyle style) {
+        this.style = style;
     }
 }
