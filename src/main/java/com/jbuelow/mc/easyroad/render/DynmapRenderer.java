@@ -17,6 +17,7 @@ public class DynmapRenderer implements Renderer {
     private final EasyRoad easyRoad;
 
     private ArrayList<Road> roadList;
+
     private HashMap<RoadSegment, PolyLineMarker> renderedMarkers;
 
     public DynmapRenderer(EasyRoad easyRoad) {
@@ -77,5 +78,10 @@ public class DynmapRenderer implements Renderer {
             e.getValue().deleteMarker();
             renderedMarkers.remove(e.getKey());
         }
+    }
+
+    @Override
+    public HashMap<RoadSegment, PolyLineMarker> getRenderedMarkers() {
+        return renderedMarkers;
     }
 }
