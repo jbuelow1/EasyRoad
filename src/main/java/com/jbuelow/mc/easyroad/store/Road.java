@@ -2,11 +2,11 @@ package com.jbuelow.mc.easyroad.store;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
 
-public class Road {
+public class Road implements ConfigurationSerializable {
 
     private final UUID uuid;
     private String name;
@@ -18,66 +18,11 @@ public class Road {
         this.uuid = uuid;
         segments = new ArrayList<>();
         name = "Unnamed Road";
+        style = new RoadStyle();
     }
 
     public Road() {
         this(UUID.randomUUID());
-    }
-
-    public Configuration saveToConfig(Configuration conf) {
-        conf.set("uuid", uuid.toString());
-        conf.set("name", name);
-
-        ArrayList<HashMap<String, Object>> segconf = new ArrayList<>();
-
-        for (RoadSegment rs : segments) {
-            HashMap<String, Object> segmap = new HashMap<>();
-            segmap.put("uuid", rs.getSegId());
-            segmap.put("p1", rs.getPoint1());
-            segmap.put("p2", rs.getPoint2());
-            segconf.add(segmap);
-        }
-
-        conf.set("segments", segconf);
-
-        return conf;
-    }
-
-    public static Road fromConfiguration(Configuration conf) {
-        Road r = new Road(UUID.fromString(conf.get("uuid").toString()));
-        r.name = conf.get("name").toString();
-
-        for (Object segconf: conf.getList("segments")) {
-            String s = (String) ((HashMap<String, ?>) segconf).get("uuid");
-
-            Location p1 = (Location) ((HashMap<String, ?>) segconf).get("p1");
-            Location p2 = (Location) ((HashMap<String, ?>) segconf).get("p2");
-
-            RoadSegment seg = new RoadSegment() {
-                @Override
-                public Location getPoint1() {
-                    return p1;
-                }
-
-                @Override
-                public Location getPoint2() {
-                    return p2;
-                }
-
-                @Override
-                public Road getRoad() {
-                    return r;
-                }
-
-                @Override
-                public String getSegId() {
-                    return s;
-                }
-            };
-
-            r.segments.add(seg);
-        }
-        return r;
     }
 
     public UUID getUUID() {
@@ -102,5 +47,29 @@ public class Road {
 
     public void setStyle(RoadStyle style) {
         this.style = style;
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uuid", uuid.toString());
+        map.put("name", name);
+        map.put("style", style);
+        List<AnonymousRoadSegment> anonSegs = new ArrayList<>();
+        for (RoadSegment seg : segments) anonSegs.add(new AnonymousRoadSegment(seg));
+        map.put("segments", anonSegs);
+        return map;
+    }
+
+    public static Road deserialize(Map<String, Object> map) {
+        UUID uuid = UUID.fromString((String) map.get("uuid"));
+        Road road = new Road(uuid);
+        road.name = (String) map.get("name");
+        road.style = (RoadStyle) map.get("style");
+        List<AnonymousRoadSegment> anonList = (List<AnonymousRoadSegment>) map.get("segments");
+        for (AnonymousRoadSegment anonSeg : anonList) {
+            road.segments.add(RoadSegment.attachRoad(anonSeg, road));
+        }
+        return road;
     }
 }

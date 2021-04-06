@@ -38,7 +38,7 @@ public class YamlStorageController implements StorageController {
 
         for (File f : new File(easyRoad.getDataFolder(), "roads").listFiles()) {
             YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
-            UUID uuid = UUID.fromString(conf.getString("uuid"));
+            UUID uuid = UUID.fromString(((Road) conf.get("roaddata")).getUUID().toString());
             roadconfigs.put(uuid, conf);
         }
 
@@ -58,14 +58,14 @@ public class YamlStorageController implements StorageController {
 
     @Override
     public Road getRoadByUUID(UUID uuid) {
-        return Road.fromConfiguration(roadconfigs.get(uuid));
+        return (Road) roadconfigs.get(uuid).get("roaddata");
     }
 
     @Override
     public ArrayList<Road> getRoadList() {
         ArrayList<Road> roads = new ArrayList<>();
         for (Map.Entry<UUID, YamlConfiguration> e : roadconfigs.entrySet()) {
-            roads.add(Road.fromConfiguration(e.getValue()));
+            roads.add((Road) e.getValue().get("roaddata"));
         }
         return roads;
     }
@@ -74,7 +74,7 @@ public class YamlStorageController implements StorageController {
     public HashMap<UUID, Road> getRoadMap() {
         HashMap<UUID, Road> roadmap = new HashMap<>();
         for (Map.Entry<UUID, YamlConfiguration> e : roadconfigs.entrySet()) {
-            roadmap.put(e.getKey(), Road.fromConfiguration(e.getValue()));
+            roadmap.put(e.getKey(), (Road) e.getValue().get("roaddata"));
         }
         return roadmap;
     }
@@ -82,7 +82,7 @@ public class YamlStorageController implements StorageController {
     @Override
     public void addRoad(Road road) {
         YamlConfiguration conf = YamlConfiguration.loadConfiguration(new File(easyRoad.getDataFolder(), "roads/" + road.getUUID().toString() + ".yml"));
-
-        roadconfigs.put(road.getUUID(), (YamlConfiguration) road.saveToConfig(conf));
+        conf.set("roaddata", road);
+        roadconfigs.put(road.getUUID(), conf);
     }
 }

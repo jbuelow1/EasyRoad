@@ -1,17 +1,32 @@
 package com.jbuelow.mc.easyroad.store;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class RoadSegment {
+public class RoadSegment extends AnonymousRoadSegment {
 
-    public abstract Location getPoint1();
-    public abstract Location getPoint2();
-    public abstract Road getRoad();
-    public abstract String getSegId();
+    private Road road;
+
+    public RoadSegment(Location p1, Location p2, Road road) {
+        super(p1, p2);
+        this.road = road;
+    }
+
+    public Road getRoad() {
+        return road;
+    }
 
     public String getID() {
-        return getRoad().getUUID().toString() + "#" + getSegId();
+        return getRoad().getUUID().toString() + "#" + getSegId().toString();
     }
+
+    public static RoadSegment attachRoad(AnonymousRoadSegment ars, Road road) {
+        RoadSegment roadSeg = new RoadSegment(ars.getPoint1(), ars.getPoint2(), road);
+        roadSeg.segId = ars.getSegId();
+        return roadSeg;
+    }
+    
 }

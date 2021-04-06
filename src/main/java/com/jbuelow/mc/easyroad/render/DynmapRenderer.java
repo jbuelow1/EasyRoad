@@ -5,7 +5,6 @@ import com.jbuelow.mc.easyroad.store.Road;
 import com.jbuelow.mc.easyroad.store.RoadSegment;
 import com.jbuelow.mc.easyroad.store.RoadStyle;
 import org.bukkit.Location;
-import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
@@ -44,7 +43,7 @@ public class DynmapRenderer implements Renderer {
         Location p1 = segment.getPoint1();
         Location p2 = segment.getPoint2();
 
-        PolyLineMarker marker = markerset.createPolyLineMarker(segment.getSegId(), segment.getRoad().getName(), false, segment.getPoint1().getWorld().getName(),
+        PolyLineMarker marker = markerset.createPolyLineMarker(segment.getID(), segment.getRoad().getName(), false, p1.getWorld().getName(),
                 new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
 
         RoadStyle style = segment.getRoad().getStyle();
