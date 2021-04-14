@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.jbuelow.mc.easyroad.conf.ColorScheme.*;
+
 public class HandleCommandEasyRoadCreate extends CroissantCommand {
 
     private EasyRoad easyRoad;
@@ -31,7 +33,7 @@ public class HandleCommandEasyRoadCreate extends CroissantCommand {
     public void run(Player sender, @Optional @Rest String roadname) {
         HashMap<Player, Session> sessions = easyRoad.getActiveSessions();
         if (sessions.containsKey(sender)) {
-            sender.sendMessage(ChatColor.RED + "Error: you are already in an EasyRoad session!\nType " + ChatColor.YELLOW + "/easyroad stop" + ChatColor.BLUE + " to exit");
+            sender.sendMessage(TEXT_ERROR + "Error: you are already in an EasyRoad session!\n"+TEXT_DEFAULT+"Type " + TEXT_EMPHASIS + "/easyroad stop" + TEXT_DEFAULT + " to exit");
             return;
         }
 
@@ -47,7 +49,7 @@ public class HandleCommandEasyRoadCreate extends CroissantCommand {
 
         String uid = s.getRoad().getUUID().toString();
 
-        sender.sendMessage(ChatColor.BLUE + "You are now in an EasyRoad session.\nType " + ChatColor.YELLOW + "/easyroad stop" + ChatColor.BLUE + " to exit");
-        sender.sendMessage(ChatColor.BLUE + "Editing road \"" + roadname + "\"\n" + ChatColor.DARK_BLUE + "(id: "+ChatColor.GRAY+uid+ChatColor.DARK_BLUE+")");
+        sender.sendMessage(TEXT_DEFAULT + "You are now in an EasyRoad session.\nType " + TEXT_EMPHASIS + "/easyroad stop" + TEXT_DEFAULT + " to exit");
+        sender.sendMessage(TEXT_DEFAULT + "Editing road \"" + roadname + "\"\n" + TEXT_LOWEMPHASIS + "(id: "+TEXT_INSIGNIFICANT+uid+TEXT_LOWEMPHASIS+")");
     }
 }

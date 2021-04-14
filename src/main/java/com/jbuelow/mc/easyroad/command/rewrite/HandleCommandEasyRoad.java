@@ -6,6 +6,8 @@ import com.jbuelow.mc.easyroad.EasyRoad;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import static com.jbuelow.mc.easyroad.conf.ColorScheme.*;
+
 public class HandleCommandEasyRoad extends CroissantCommand {
 
     public HandleCommandEasyRoad(EasyRoad easyRoad) {
@@ -22,10 +24,10 @@ public class HandleCommandEasyRoad extends CroissantCommand {
 
     @CommandExecutor
     public void run (Player sender) {
-        sender.sendMessage(ChatColor.YELLOW + "EasyRoad commands:");
+        sender.sendMessage(TEXT_EMPHASIS + "EasyRoad commands:");
         for (CroissantCommand subcommand : super.getSubcommands().values()) {
-            sender.sendMessage(ChatColor.GOLD + subcommand.getUsage(subcommand.getName()) + ": " +
-                    ChatColor.RESET + subcommand.getDescription());
+            sender.sendMessage(TEXT_DEFAULT + subcommand.getUsage(subcommand.getName()) + ": " +
+                    TEXT_LOWEMPHASIS + subcommand.getDescription());
         }
     }
 }

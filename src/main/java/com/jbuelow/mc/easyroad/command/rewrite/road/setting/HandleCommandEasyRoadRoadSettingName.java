@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+import static com.jbuelow.mc.easyroad.conf.ColorScheme.TEXT_DEFAULT;
+import static com.jbuelow.mc.easyroad.conf.ColorScheme.TEXT_ERROR;
+
 public class HandleCommandEasyRoadRoadSettingName extends CroissantCommand {
 
     private EasyRoad easyRoad;
@@ -28,14 +31,14 @@ public class HandleCommandEasyRoadRoadSettingName extends CroissantCommand {
     public void run(Player sender, @Rest String name) {
         Map<Player, Session> sessions = easyRoad.getActiveSessions();
         if (!sessions.containsKey(sender)) {
-            sender.sendMessage(ChatColor.RED + "Error: You are not in an EasyRoad session!");
+            sender.sendMessage(TEXT_ERROR + "Error: You are not in an EasyRoad session!");
             return;
         }
 
         Session s = sessions.get(sender);
 
         s.setRoadName(name);
-        sender.sendMessage(ChatColor.BLUE + "Set road name!");
+        sender.sendMessage(TEXT_DEFAULT + "Set road name!");
     }
 
 }

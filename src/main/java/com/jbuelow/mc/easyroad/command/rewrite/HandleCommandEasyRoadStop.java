@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+import static com.jbuelow.mc.easyroad.conf.ColorScheme.*;
+
 public class HandleCommandEasyRoadStop extends CroissantCommand {
 
     private EasyRoad easyRoad;
@@ -30,7 +32,7 @@ public class HandleCommandEasyRoadStop extends CroissantCommand {
     public void run(Player sender, @Default("true") boolean save) {
         Map<Player, Session> sessions = easyRoad.getActiveSessions();
         if (!sessions.containsKey(sender)) {
-            sender.sendMessage(ChatColor.RED + "Error: You are not in an EasyRoad session!");
+            sender.sendMessage(TEXT_ERROR + "Error: You are not in an EasyRoad session!");
             return;
         }
 
@@ -39,14 +41,14 @@ public class HandleCommandEasyRoadStop extends CroissantCommand {
         s.disable();
         sessions.remove(sender);
 
-        sender.sendMessage(ChatColor.BLUE + "EasyRoad session ended.");
+        sender.sendMessage(TEXT_DEFAULT + "EasyRoad session ended.");
 
         if (!save) {
             easyRoad.storageController.removeRoadByUuid(s.getRoad().getUUID());
             easyRoad.renderer.rerenderAll();
             easyRoad.storageController.save();
         } else {
-            sender.sendMessage(ChatColor.BLUE + "Saved road \"" + s.getRoad().getName() + "\"\n" + ChatColor.DARK_BLUE + "(id: "+ChatColor.GRAY+s.getRoad().getUUID().toString()+ChatColor.DARK_BLUE+")");
+            sender.sendMessage(TEXT_DEFAULT + "Saved road \"" + s.getRoad().getName() + "\"\n" + TEXT_LOWEMPHASIS + "(id: "+TEXT_INSIGNIFICANT+s.getRoad().getUUID().toString()+TEXT_LOWEMPHASIS+")");
         }
     }
 
