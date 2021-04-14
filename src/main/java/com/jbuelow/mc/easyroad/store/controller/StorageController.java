@@ -18,5 +18,5 @@ public interface StorageController {
     ArrayList<Road> getRoadList();
     HashMap<UUID, Road> getRoadMap();
     void addRoad(Road road);
-
+    void removeRoadByUuid(UUID uuid);
 }

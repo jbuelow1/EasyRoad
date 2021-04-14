@@ -46,6 +46,11 @@ public class Session {
         this.road = new Road();
     }
 
+    public Session(EasyRoad easyRoad, Player player, String roadName) {
+        this(easyRoad, player);
+        road.setName(roadName);
+    }
+
     public void enable() {
         enabled = true;
     }
@@ -117,20 +122,6 @@ public class Session {
     }
 
     private void makeLine() {
-        /*(MarkerSet markerset = easyRoad.getDapi().getMarkerAPI().getMarkerSet(set);
-
-        if (markerset == null) {
-            markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), false);
-        }
-
-        UUID uid = UUID.randomUUID();
-        String id = uid.toString();
-
-        PolyLineMarker marker = markerset.createPolyLineMarker("eroad_" + id, roadName, false, p1.getWorld().getName(),
-                new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
-
-        marker.setLineStyle(weight, opacity, color);*/
-
         RoadSegment segment = new RoadSegment(p1, p2, road);
 
         easyRoad.renderer.renderSegment(segment);
@@ -177,7 +168,7 @@ public class Session {
     }
 
     public void setRoadName(String roadName) {
-        this.roadName = roadName;
+        road.setName(roadName);
     }
 
     public void setWeight(int weight) {
@@ -190,5 +181,9 @@ public class Session {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public Road getRoad() {
+        return road;
     }
 }

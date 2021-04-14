@@ -1,7 +1,12 @@
 package com.jbuelow.mc.easyroad;
 
+import com.github.overmighty.croissant.Croissant;
+import com.github.overmighty.croissant.command.CommandHandler;
 import com.jbuelow.mc.easyroad.command.HandleCommandRoot;
 import com.jbuelow.mc.easyroad.command.HandleTETSCOMMAD;
+import com.jbuelow.mc.easyroad.command.rewrite.HandleCommandEasyRoad;
+import com.jbuelow.mc.easyroad.command.rewrite.HandleCommandEasyRoadStop;
+import com.jbuelow.mc.easyroad.event.EventPlayerDisconnect;
 import com.jbuelow.mc.easyroad.event.EventPlayerInteractListener;
 import com.jbuelow.mc.easyroad.render.DynmapRenderer;
 import com.jbuelow.mc.easyroad.render.Renderer;
@@ -40,13 +45,16 @@ public final class EasyRoad extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
-        //register commands
-        getCommand("easyroad").setExecutor(new HandleCommandRoot(this));
+        //setup croissant
+        Croissant.setPlugin(this);
+        CommandHandler commandHandler = new CommandHandler();
 
-        getCommand("testroad").setExecutor(new HandleTETSCOMMAD(this));
+        //register command handlers
+        commandHandler.registerCommand(new HandleCommandEasyRoad(this));
 
         //register event listeners
         getServer().getPluginManager().registerEvents(new EventPlayerInteractListener(this), this);
+        getServer().getPluginManager().registerEvents(new EventPlayerDisconnect(this), this);
 
         //load dynmap api
         dapi = (DynmapAPI) Bukkit.getServer().getPluginManager().getPlugin("dynmap");
@@ -55,9 +63,11 @@ public final class EasyRoad extends JavaPlugin {
             Bukkit.getServer().getPluginManager().disablePlugin(this);
         }
 
+        //load data
         storageController = new YamlStorageController(this);
         storageController.load();
 
+        //render existing roads
         renderer.applyRoadList(storageController.getRoadList());
         renderer.rerenderAll();
 

@@ -74,10 +74,8 @@ public class DynmapRenderer implements Renderer {
     }
 
     private void wipeDynmap() {
-        for (Map.Entry<RoadSegment, PolyLineMarker> e : renderedMarkers.entrySet()) {
-            e.getValue().deleteMarker();
-            renderedMarkers.remove(e.getKey());
-        }
+        renderedMarkers.forEach((k, v) -> v.deleteMarker());
+        renderedMarkers = new HashMap<>();
     }
 
     @Override

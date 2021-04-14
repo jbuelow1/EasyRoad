@@ -85,4 +85,9 @@ public class YamlStorageController implements StorageController {
         conf.set("roaddata", road);
         roadconfigs.put(road.getUUID(), conf);
     }
+
+    @Override
+    public void removeRoadByUuid(UUID uuid) {
+        roadconfigs.remove(uuid);
+    }
 }
