@@ -13,6 +13,11 @@ commands:
     aliases: [ easyroad ]
     permission: easyroad.easyroad
     usage: "Usage: /easyroad <help|session>"
+  testroad:
+    description: Use EasyRoad
+    aliases: [ testroad ]
+    permission: easyroad.easyroad
+    usage: "Usage: /easyroad <help|session>"
 
 permissions:
   easyroad.*:

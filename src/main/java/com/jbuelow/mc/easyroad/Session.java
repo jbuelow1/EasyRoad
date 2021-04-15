@@ -1,5 +1,7 @@
 package com.jbuelow.mc.easyroad;
 
+import com.jbuelow.mc.easyroad.store.Road;
+import com.jbuelow.mc.easyroad.store.RoadSegment;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -25,13 +27,14 @@ public class Session {
 
     private Location p2a;
 
-    ArrayList<PolyLineMarker> lineHistory = new ArrayList<>();
-    ArrayList<Location> pointHistory = new ArrayList<>();
-
-    private final Random r = new Random();
+    //ArrayList<PolyLineMarker> lineHistory = new ArrayList<>();
+    List<RoadSegment> segmentHistory = new ArrayList<>();
+    List<Location> pointHistory = new ArrayList<>();
 
     private String set = "EasyRoad";
     private String roadName = "Unnamed Road";
+
+    private Road road;
 
     private int weight = 3;
     private double opacity = 0.8;
@@ -40,6 +43,7 @@ public class Session {
     public Session(EasyRoad easyRoad, Player player) {
         this.easyRoad = easyRoad;
         this.player = player;
+        this.road = new Road();
     }
 
     public void enable() {
@@ -47,6 +51,8 @@ public class Session {
     }
 
     public void disable() {
+        easyRoad.storageController.addRoad(road);
+        easyRoad.storageController.save();
         enabled = false;
     }
 
@@ -111,10 +117,10 @@ public class Session {
     }
 
     private void makeLine() {
-        MarkerSet markerset = easyRoad.getDapi().getMarkerAPI().getMarkerSet(set);
+        /*(MarkerSet markerset = easyRoad.getDapi().getMarkerAPI().getMarkerSet(set);
 
         if (markerset == null) {
-            markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), true);
+            markerset = easyRoad.getDapi().getMarkerAPI().createMarkerSet(set, "EasyRoad Set", easyRoad.getDapi().getMarkerAPI().getMarkerIcons(), false);
         }
 
         UUID uid = UUID.randomUUID();
@@ -123,9 +129,14 @@ public class Session {
         PolyLineMarker marker = markerset.createPolyLineMarker("eroad_" + id, roadName, false, p1.getWorld().getName(),
                 new double[]{p1.getX(), p2.getX()}, new double[]{p1.getY(), p2.getY()}, new double[]{p1.getZ(), p2.getZ()}, false);
 
-        marker.setLineStyle(weight, opacity, color);
+        marker.setLineStyle(weight, opacity, color);*/
 
-        lineHistory.add(marker);
+        RoadSegment segment = new RoadSegment(p1, p2, road);
+
+        easyRoad.renderer.renderSegment(segment);
+        road.getSegments().add(segment);
+
+        segmentHistory.add(segment);
 
         player.playSound(p2, Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 1);
       
@@ -144,9 +155,10 @@ public class Session {
     }
 
     public boolean undo() {
-        if (lineHistory.size() > 0 && pointHistory.size() > 0) {
-            PolyLineMarker marker = lineHistory.get(lineHistory.size() - 1);
-            lineHistory.remove(lineHistory.size() - 1);
+        if (segmentHistory.size() > 0 && pointHistory.size() > 0) {
+            PolyLineMarker marker = easyRoad.renderer.getRenderedMarkers().get(segmentHistory.size() - 1);
+            segmentHistory.remove(segmentHistory.size() - 1);
+            road.getSegments().remove(segmentHistory.get(segmentHistory.size() - 1));
             marker.deleteMarker();
 
             p2 = p1;
